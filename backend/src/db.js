@@ -15,6 +15,9 @@ async function initDb() {
       created_at TEXT NOT NULL
     );
 
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verified BOOLEAN NOT NULL DEFAULT false;
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS verification_token TEXT;
+
     CREATE TABLE IF NOT EXISTS refresh_tokens (
       id TEXT PRIMARY KEY,
       token TEXT UNIQUE NOT NULL,

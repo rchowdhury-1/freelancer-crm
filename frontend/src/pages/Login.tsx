@@ -1,5 +1,5 @@
-import { useState, FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, FormEvent, useEffect } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Briefcase, Eye, EyeOff } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../apiClient';
@@ -11,6 +11,13 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const verified = searchParams.get('verified');
+    if (verified === 'true') toast.success('Email verified! You can now sign in.');
+    if (verified === 'invalid') toast.error('Invalid or expired verification link.');
+  }, []);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();

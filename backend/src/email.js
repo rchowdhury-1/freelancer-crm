@@ -46,4 +46,27 @@ async function sendInvoiceEmail({ to, clientName, invoiceNumber, dueDate, total,
   });
 }
 
-module.exports = { sendInvoiceEmail };
+async function sendVerificationEmail({ to, name, verificationUrl }) {
+  const resend = getResend();
+
+  const html = `
+    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #111;">
+      <h2 style="color: #4f46e5;">Verify your email</h2>
+      <p>Hi ${name},</p>
+      <p>Thanks for signing up to FreelancerCRM. Click the button below to verify your email address.</p>
+      <p style="margin: 32px 0;">
+        <a href="${verificationUrl}" style="background: #4f46e5; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; display: inline-block;">Verify Email</a>
+      </p>
+      <p style="color: #555; font-size: 14px;">This link expires in 24 hours. If you didn't create an account, you can ignore this email.</p>
+    </div>
+  `;
+
+  await resend.emails.send({
+    from: FROM,
+    to,
+    subject: 'Verify your FreelancerCRM email',
+    html,
+  });
+}
+
+module.exports = { sendInvoiceEmail, sendVerificationEmail };

@@ -1,16 +1,14 @@
 import { useState, FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Briefcase, Eye, EyeOff } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Briefcase, Eye, EyeOff, Mail } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../apiClient';
-import { useAuth } from '../contexts/AuthContext';
 
 export default function Register() {
   const [form, setForm] = useState({ name: '', email: '', password: '' });
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
-  const navigate = useNavigate();
+  const [submitted, setSubmitted] = useState(false);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -20,15 +18,32 @@ export default function Register() {
     }
     setLoading(true);
     try {
-      const { data } = await api.post('/auth/register', form);
-      login(data.accessToken, data.user);
-      toast.success('Account created! Welcome to FreelancerCRM.');
-      navigate('/dashboard');
+      await api.post('/auth/register', form);
+      setSubmitted(true);
     } catch (err: any) {
       toast.error(err.response?.data?.error || 'Registration failed');
     } finally {
       setLoading(false);
     }
+  }
+
+  if (submitted) {
+    return (
+      <div className="min-h-screen bg-gray-950 flex items-center justify-center p-4">
+        <div className="w-full max-w-md text-center">
+          <div className="w-16 h-16 bg-indigo-600/20 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Mail className="w-8 h-8 text-indigo-400" />
+          </div>
+          <h1 className="text-2xl font-bold text-white mb-3">Check your email</h1>
+          <p className="text-gray-400 mb-6">
+            We sent a verification link to <span className="text-white font-medium">{form.email}</span>. Click the link to activate your account.
+          </p>
+          <Link to="/login" className="text-indigo-400 hover:text-indigo-300 text-sm font-medium">
+            Back to sign in
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   return (

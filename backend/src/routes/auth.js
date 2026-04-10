@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
 const { pool } = require('../db');
+const { sendVerificationEmail } = require('../email');
 
 const router = express.Router();
 
@@ -34,24 +35,17 @@ router.post('/register', async (req, res) => {
     const hash = await bcrypt.hash(password, 12);
     const id = uuidv4();
     const now = new Date().toISOString();
+    const verificationToken = uuidv4();
 
     await pool.query(
-      'INSERT INTO users (id, name, email, password_hash, created_at) VALUES ($1,$2,$3,$4,$5)',
-      [id, name, email, hash, now]
+      'INSERT INTO users (id, name, email, password_hash, created_at, email_verified, verification_token) VALUES ($1,$2,$3,$4,$5,false,$6)',
+      [id, name, email, hash, now, verificationToken]
     );
 
-    const accessToken = signAccess(id);
-    const refreshToken = signRefresh(id);
-    const refreshId = uuidv4();
-    const refreshExpiry = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+    const verificationUrl = `${process.env.BACKEND_URL}/auth/verify-email?token=${verificationToken}`;
+    await sendVerificationEmail({ to: email, name, verificationUrl });
 
-    await pool.query(
-      'INSERT INTO refresh_tokens (id, token, user_id, expires_at, created_at) VALUES ($1,$2,$3,$4,$5)',
-      [refreshId, refreshToken, id, refreshExpiry, now]
-    );
-
-    res.cookie('refreshToken', refreshToken, COOKIE_OPTIONS);
-    res.status(201).json({ accessToken, user: { id, name, email } });
+    res.status(201).json({ message: 'Registration successful. Please check your email to verify your account.' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
@@ -70,6 +64,8 @@ router.post('/login', async (req, res) => {
 
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
+
+    if (!user.email_verified) return res.status(403).json({ error: 'Please verify your email before logging in.' });
 
     const accessToken = signAccess(user.id);
     const refreshToken = signRefresh(user.id);
@@ -90,6 +86,23 @@ router.post('/login', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// GET /auth/verify-email?token=...
+router.get('/verify-email', async (req, res) => {
+  const { token } = req.query;
+  if (!token) return res.redirect(`${process.env.CLIENT_URL}/login?verified=invalid`);
+
+  try {
+    const result = await pool.query('SELECT id FROM users WHERE verification_token=$1', [token]);
+    if (result.rows.length === 0) return res.redirect(`${process.env.CLIENT_URL}/login?verified=invalid`);
+
+    await pool.query('UPDATE users SET email_verified=true, verification_token=NULL WHERE id=$1', [result.rows[0].id]);
+    res.redirect(`${process.env.CLIENT_URL}/login?verified=true`);
+  } catch (err) {
+    console.error(err);
+    res.redirect(`${process.env.CLIENT_URL}/login?verified=invalid`);
   }
 });
 
