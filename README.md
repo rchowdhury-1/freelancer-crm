@@ -20,7 +20,16 @@ A full-stack SaaS CRM built for freelancers to manage clients, projects, invoice
 
 ## Screenshots
 
-> _Add screenshots here_
+### Landing Page
+![Landing](screenshots/Landing-1.png)
+![Landing](screenshots/Landing-2.png)
+![Pricing](screenshots/Pricing.png)
+
+### App
+![Dashboard](screenshots/Dashboard.png)
+![Clients](screenshots/Clients.png)
+![Projects](screenshots/Projects.png)
+![Invoices](screenshots/Invoices.png)
 
 ---
 
