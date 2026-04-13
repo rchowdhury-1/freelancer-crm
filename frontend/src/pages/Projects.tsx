@@ -20,8 +20,8 @@ import Modal from '../components/Modal';
 type Status = 'not_started' | 'in_progress' | 'completed';
 
 const COLUMNS: { id: Status; label: string; color: string }[] = [
-  { id: 'not_started', label: 'Not Started', color: 'border-gray-600' },
-  { id: 'in_progress', label: 'In Progress', color: 'border-yellow-600' },
+  { id: 'not_started', label: 'Not Started', color: 'border-slate-600' },
+  { id: 'in_progress', label: 'In Progress', color: 'border-amber-500' },
   { id: 'completed', label: 'Completed', color: 'border-green-600' },
 ];
 
@@ -59,10 +59,8 @@ function ProjectCard({
   return (
     <div
       ref={setNodeRef}
-      style={style}
-      className={`bg-gray-800 border border-gray-700 rounded-xl p-4 space-y-3 ${
-        isDragging ? 'opacity-0' : ''
-      }`}
+      style={{ ...style, border: '1px solid var(--border)' }}
+      className={`bg-gray-800 rounded-xl p-4 space-y-3 ${isDragging ? 'opacity-0' : ''}`}
     >
       <div className="flex items-start justify-between gap-2">
         <h3
@@ -75,13 +73,13 @@ function ProjectCard({
         <div className="flex items-center gap-1 flex-shrink-0">
           <button
             onClick={() => onEdit(project)}
-            className="p-1 text-gray-500 hover:text-indigo-400 rounded transition-colors"
+            className="p-1 text-slate-500 hover:text-blue-400 rounded transition-colors"
           >
             <Pencil className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={() => setConfirmDeleteId(project.id)}
-            className="p-1 text-gray-500 hover:text-red-400 rounded transition-colors"
+            className="p-1 text-slate-500 hover:text-red-400 rounded transition-colors"
           >
             <Trash2 className="w-3.5 h-3.5" />
           </button>
@@ -89,14 +87,14 @@ function ProjectCard({
       </div>
 
       {project.client_name && (
-        <p className="text-xs text-indigo-400">{project.client_name}</p>
+        <p className="text-xs text-blue-400">{project.client_name}</p>
       )}
 
       {project.description && (
-        <p className="text-xs text-gray-400 line-clamp-2">{project.description}</p>
+        <p className="text-xs text-slate-400 line-clamp-2">{project.description}</p>
       )}
 
-      <div className="flex items-center gap-3 text-xs text-gray-500">
+      <div className="flex items-center gap-3 text-xs text-slate-500">
         {project.deadline && (
           <div className="flex items-center gap-1">
             <Calendar className="w-3 h-3" />
@@ -113,7 +111,7 @@ function ProjectCard({
 
       {confirmDeleteId === project.id && (
         <div className="flex items-center gap-2 pt-1 border-t border-gray-700">
-          <span className="text-xs text-gray-400 flex-1">Delete this project?</span>
+          <span className="text-xs text-slate-400 flex-1">Delete this project?</span>
           <button
             onClick={() => onDelete(project.id)}
             className="text-xs bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded"
@@ -122,7 +120,7 @@ function ProjectCard({
           </button>
           <button
             onClick={() => setConfirmDeleteId(null)}
-            className="text-xs bg-gray-700 hover:bg-gray-600 text-gray-300 px-2 py-1 rounded"
+            className="text-xs bg-gray-700 hover:bg-gray-600 text-slate-300 px-2 py-1 rounded"
           >
             Cancel
           </button>
@@ -154,17 +152,17 @@ function KanbanColumn({
   return (
     <div className="flex-1 min-w-[280px]">
       <div className={`border-t-2 ${column.color} rounded-t-none rounded-b-xl`}>
-        <div className="bg-gray-900 border border-gray-800 border-t-0 rounded-b-xl">
-          <div className="px-4 py-3 border-b border-gray-800 flex items-center justify-between">
+        <div className="bg-gray-900 rounded-b-xl" style={{ border: '1px solid var(--border)', borderTop: 'none' }}>
+          <div className="px-4 py-3 flex items-center justify-between" style={{ borderBottom: '1px solid var(--border)' }}>
             <h2 className="text-sm font-semibold text-white">{column.label}</h2>
-            <span className="text-xs bg-gray-800 text-gray-400 rounded-full px-2 py-0.5">
+            <span className="text-xs bg-gray-800 text-slate-400 rounded-full px-2 py-0.5">
               {projects.length}
             </span>
           </div>
           <div
             ref={setNodeRef}
             className={`p-3 min-h-[200px] space-y-3 transition-colors rounded-b-xl ${
-              isOver ? 'bg-indigo-900/10' : ''
+              isOver ? 'bg-blue-900/10' : ''
             }`}
           >
             {projects.map((p) => (
@@ -296,22 +294,22 @@ export default function Projects() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-white">Projects</h1>
-          <p className="text-gray-500 text-sm mt-1">Drag cards between columns to update status</p>
+          <p className="text-slate-500 text-sm mt-1">Drag cards between columns to update status</p>
         </div>
-        <button onClick={openCreate} className="btn-primary inline-flex items-center gap-2">
+        <button onClick={openCreate} className="btn-primary">
           <Plus className="w-4 h-4" /> New project
         </button>
       </div>
 
       {loading ? (
         <div className="flex justify-center py-16">
-          <div className="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+          <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
         </div>
       ) : projects.length === 0 ? (
         <div className="card text-center py-16">
           <FolderKanban className="w-10 h-10 text-gray-700 mx-auto mb-3" />
-          <p className="text-gray-500 mb-2">No projects yet.</p>
-          <button onClick={openCreate} className="text-indigo-400 hover:text-indigo-300 text-sm">
+          <p className="text-slate-500 mb-2">No projects yet.</p>
+          <button onClick={openCreate} className="text-amber-400 hover:text-amber-300 text-sm">
             Create your first project →
           </button>
         </div>
@@ -333,10 +331,10 @@ export default function Projects() {
           </div>
           <DragOverlay>
             {activeProject && (
-              <div className="bg-gray-800 border border-indigo-500 rounded-xl p-4 shadow-2xl opacity-95 w-72">
+              <div className="bg-gray-800 border border-blue-500 rounded-xl p-4 shadow-2xl opacity-95 w-72">
                 <p className="font-medium text-white text-sm">{activeProject.title}</p>
                 {activeProject.client_name && (
-                  <p className="text-xs text-indigo-400 mt-1">{activeProject.client_name}</p>
+                  <p className="text-xs text-blue-400 mt-1">{activeProject.client_name}</p>
                 )}
               </div>
             )}
@@ -436,10 +434,10 @@ export default function Projects() {
               <button type="button" onClick={() => setModalOpen(false)} className="btn-secondary flex-1">Cancel</button>
               <button type="submit" disabled={saving} className="btn-primary flex-1">
                 {saving ? (
-                  <span className="flex items-center justify-center gap-2">
+                  <>
                     <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                     Saving...
-                  </span>
+                  </>
                 ) : editing ? 'Save changes' : 'Create project'}
               </button>
             </div>

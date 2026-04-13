@@ -33,17 +33,17 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
   }
 
   const sidebarContent = (
-    <div className="flex flex-col h-full bg-gray-900 border-r border-gray-800">
+    <div className="flex flex-col h-full bg-gray-900" style={{ borderRight: '1px solid var(--border)' }}>
       {/* Logo */}
-      <div className="flex items-center justify-between p-6 border-b border-gray-800">
+      <div className="flex items-center justify-between p-6" style={{ borderBottom: '1px solid var(--border)' }}>
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
             <Briefcase className="w-4 h-4 text-white" />
           </div>
           <span className="text-white font-bold text-lg">FreelancerCRM</span>
         </div>
         {onClose && (
-          <button onClick={onClose} className="lg:hidden p-1 text-gray-400 hover:text-white">
+          <button onClick={onClose} className="lg:hidden p-1 text-slate-400 hover:text-white">
             <X className="w-5 h-5" />
           </button>
         )}
@@ -59,8 +59,8 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
             className={({ isActive }) =>
               `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                 isActive
-                  ? 'bg-indigo-600 text-white'
-                  : 'text-gray-400 hover:text-white hover:bg-gray-800'
+                  ? 'bg-blue-600 text-white'
+                  : 'text-slate-400 hover:text-white hover:bg-gray-800'
               }`
             }
           >
@@ -71,19 +71,19 @@ export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
       </nav>
 
       {/* User + Logout */}
-      <div className="p-4 border-t border-gray-800">
+      <div className="p-4" style={{ borderTop: '1px solid var(--border)' }}>
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-8 h-8 bg-indigo-700 rounded-full flex items-center justify-center text-white text-sm font-medium">
+          <div className="w-8 h-8 bg-blue-700 rounded-full flex items-center justify-center text-white text-sm font-medium">
             {user?.name?.charAt(0).toUpperCase()}
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-white truncate">{user?.name}</p>
-            <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+            <p className="text-xs text-slate-500 truncate">{user?.email}</p>
           </div>
         </div>
         <button
           onClick={handleLogout}
-          className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-400 hover:text-red-400 hover:bg-gray-800 rounded-lg transition-colors"
+          className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-400 hover:text-red-400 hover:bg-gray-800 rounded-lg transition-colors"
         >
           <LogOut className="w-4 h-4" />
           Sign out

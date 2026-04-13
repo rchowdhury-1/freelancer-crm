@@ -102,8 +102,8 @@ export default function Settings() {
       {/* Profile */}
       <div className="card space-y-5">
         <div className="flex items-center gap-3 pb-4 border-b border-gray-800">
-          <div className="w-9 h-9 bg-indigo-700 rounded-xl flex items-center justify-center">
-            <User className="w-5 h-5 text-indigo-200" />
+          <div className="w-9 h-9 bg-blue-700 rounded-xl flex items-center justify-center">
+            <User className="w-5 h-5 text-blue-200" />
           </div>
           <div>
             <h2 className="font-semibold text-white">Profile</h2>

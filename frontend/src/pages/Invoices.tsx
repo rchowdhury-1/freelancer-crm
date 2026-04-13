@@ -157,22 +157,22 @@ export default function Invoices() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-white">Invoices</h1>
-          <p className="text-gray-500 text-sm mt-1">{invoices.length} invoice{invoices.length !== 1 ? 's' : ''}</p>
+          <p className="text-slate-500 text-sm mt-1">{invoices.length} invoice{invoices.length !== 1 ? 's' : ''}</p>
         </div>
-        <button onClick={() => { setForm(emptyForm); setModalOpen(true); }} className="btn-primary inline-flex items-center gap-2">
+        <button onClick={() => { setForm(emptyForm); setModalOpen(true); }} className="btn-primary">
           <Plus className="w-4 h-4" /> New invoice
         </button>
       </div>
 
       {loading ? (
         <div className="flex justify-center py-16">
-          <div className="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+          <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
         </div>
       ) : invoices.length === 0 ? (
         <div className="card text-center py-16">
           <FileText className="w-10 h-10 text-gray-700 mx-auto mb-3" />
-          <p className="text-gray-500 mb-2">No invoices yet.</p>
-          <button onClick={() => { setForm(emptyForm); setModalOpen(true); }} className="text-indigo-400 hover:text-indigo-300 text-sm">
+          <p className="text-slate-500 mb-2">No invoices yet.</p>
+          <button onClick={() => { setForm(emptyForm); setModalOpen(true); }} className="text-amber-400 hover:text-amber-300 text-sm">
             Create your first invoice →
           </button>
         </div>
@@ -180,7 +180,7 @@ export default function Invoices() {
         <div className="card p-0 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="border-b border-gray-800">
+              <thead style={{ borderBottom: '1px solid var(--border)' }}>
                 <tr>
                   <th className="table-header">Invoice</th>
                   <th className="table-header hidden sm:table-cell">Client</th>
@@ -194,13 +194,13 @@ export default function Invoices() {
                 {invoices.map((inv) => (
                   <tr key={inv.id} className="hover:bg-gray-800/30 transition-colors">
                     <td className="table-cell">
-                      <Link to={`/invoices/${inv.id}`} className="font-medium text-indigo-400 hover:text-indigo-300 transition-colors">
+                      <Link to={`/invoices/${inv.id}`} className="font-medium text-amber-400 hover:text-amber-300 transition-colors">
                         {inv.invoice_number}
                       </Link>
-                      {inv.client_name && <p className="text-xs text-gray-500 sm:hidden mt-0.5">{inv.client_name}</p>}
+                      {inv.client_name && <p className="text-xs text-slate-500 sm:hidden mt-0.5">{inv.client_name}</p>}
                     </td>
-                    <td className="table-cell hidden sm:table-cell text-gray-400">{inv.client_name || '—'}</td>
-                    <td className="table-cell hidden md:table-cell text-gray-400">
+                    <td className="table-cell hidden sm:table-cell text-slate-400">{inv.client_name || '—'}</td>
+                    <td className="table-cell hidden md:table-cell text-slate-400">
                       {inv.due_date ? format(new Date(inv.due_date), 'dd MMM yyyy') : '—'}
                     </td>
                     <td className="table-cell font-medium text-white">${Number(inv.total).toFixed(2)}</td>
@@ -208,7 +208,7 @@ export default function Invoices() {
                     <td className="table-cell text-right">
                       {confirmDeleteId === inv.id ? (
                         <div className="flex items-center justify-end gap-2">
-                          <span className="text-xs text-gray-400">Delete?</span>
+                          <span className="text-xs text-slate-400">Delete?</span>
                           <button
                             onClick={() => handleDelete(inv.id)}
                             disabled={actionLoading === `delete-${inv.id}`}
@@ -216,30 +216,30 @@ export default function Invoices() {
                           >
                             {actionLoading === `delete-${inv.id}` ? '...' : 'Confirm'}
                           </button>
-                          <button onClick={() => setConfirmDeleteId(null)} className="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded">Cancel</button>
+                          <button onClick={() => setConfirmDeleteId(null)} className="text-xs bg-gray-700 text-slate-300 px-2 py-1 rounded">Cancel</button>
                         </div>
                       ) : (
                         <div className="flex items-center justify-end gap-1">
-                          <Link to={`/invoices/${inv.id}`} title="View" className="p-1.5 text-gray-500 hover:text-white hover:bg-gray-800 rounded transition-colors">
+                          <Link to={`/invoices/${inv.id}`} title="View" className="p-1.5 text-slate-500 hover:text-white hover:bg-gray-800 rounded transition-colors">
                             <Eye className="w-4 h-4" />
                           </Link>
-                          <button title="Send email" onClick={() => handleSend(inv.id)} disabled={!!actionLoading} className="p-1.5 text-gray-500 hover:text-blue-400 hover:bg-gray-800 rounded transition-colors disabled:opacity-40">
+                          <button title="Send email" onClick={() => handleSend(inv.id)} disabled={!!actionLoading} className="p-1.5 text-slate-500 hover:text-blue-400 hover:bg-gray-800 rounded transition-colors disabled:opacity-40">
                             {actionLoading === `send-${inv.id}` ? <span className="w-4 h-4 border border-blue-400 border-t-transparent rounded-full animate-spin block" /> : <Send className="w-4 h-4" />}
                           </button>
-                          <button title="Download PDF" onClick={() => handleDownloadPdf(inv.id, inv.invoice_number)} disabled={!!actionLoading} className="p-1.5 text-gray-500 hover:text-green-400 hover:bg-gray-800 rounded transition-colors disabled:opacity-40">
+                          <button title="Download PDF" onClick={() => handleDownloadPdf(inv.id, inv.invoice_number)} disabled={!!actionLoading} className="p-1.5 text-slate-500 hover:text-green-400 hover:bg-gray-800 rounded transition-colors disabled:opacity-40">
                             {actionLoading === `pdf-${inv.id}` ? <span className="w-4 h-4 border border-green-400 border-t-transparent rounded-full animate-spin block" /> : <Download className="w-4 h-4" />}
                           </button>
                           {inv.status !== 'paid' && (
                             <>
-                              <button title="Create Stripe payment link" onClick={() => handleStripeCheckout(inv.id)} disabled={!!actionLoading} className="p-1.5 text-gray-500 hover:text-purple-400 hover:bg-gray-800 rounded transition-colors disabled:opacity-40">
-                                {actionLoading === `stripe-${inv.id}` ? <span className="w-4 h-4 border border-purple-400 border-t-transparent rounded-full animate-spin block" /> : <CreditCard className="w-4 h-4" />}
+                              <button title="Create Stripe payment link" onClick={() => handleStripeCheckout(inv.id)} disabled={!!actionLoading} className="p-1.5 text-slate-500 hover:text-amber-400 hover:bg-gray-800 rounded transition-colors disabled:opacity-40">
+                                {actionLoading === `stripe-${inv.id}` ? <span className="w-4 h-4 border border-amber-400 border-t-transparent rounded-full animate-spin block" /> : <CreditCard className="w-4 h-4" />}
                               </button>
-                              <button title="Mark as paid" onClick={() => handleMarkPaid(inv.id)} disabled={!!actionLoading} className="p-1.5 text-gray-500 hover:text-yellow-400 hover:bg-gray-800 rounded transition-colors disabled:opacity-40">
-                                {actionLoading === `paid-${inv.id}` ? <span className="w-4 h-4 border border-yellow-400 border-t-transparent rounded-full animate-spin block" /> : <Check className="w-4 h-4" />}
+                              <button title="Mark as paid" onClick={() => handleMarkPaid(inv.id)} disabled={!!actionLoading} className="p-1.5 text-slate-500 hover:text-green-400 hover:bg-gray-800 rounded transition-colors disabled:opacity-40">
+                                {actionLoading === `paid-${inv.id}` ? <span className="w-4 h-4 border border-green-400 border-t-transparent rounded-full animate-spin block" /> : <Check className="w-4 h-4" />}
                               </button>
                             </>
                           )}
-                          <button title="Delete" onClick={() => setConfirmDeleteId(inv.id)} className="p-1.5 text-gray-500 hover:text-red-400 hover:bg-gray-800 rounded transition-colors">
+                          <button title="Delete" onClick={() => setConfirmDeleteId(inv.id)} className="p-1.5 text-slate-500 hover:text-red-400 hover:bg-gray-800 rounded transition-colors">
                             <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
@@ -291,48 +291,23 @@ export default function Invoices() {
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label className="label mb-0">Line Items *</label>
-                <button type="button" onClick={addItem} className="text-xs text-indigo-400 hover:text-indigo-300">+ Add item</button>
+                <button type="button" onClick={addItem} className="text-xs text-amber-400 hover:text-amber-300">+ Add item</button>
               </div>
               <div className="space-y-2">
                 {form.items.map((item, i) => (
                   <div key={i} className="grid grid-cols-12 gap-2 items-start">
                     <div className="col-span-6">
-                      <input
-                        type="text"
-                        required
-                        className="input text-sm"
-                        placeholder="Description"
-                        value={item.description}
-                        onChange={(e) => updateItem(i, 'description', e.target.value)}
-                      />
+                      <input type="text" required className="input text-sm" placeholder="Description" value={item.description} onChange={(e) => updateItem(i, 'description', e.target.value)} />
                     </div>
                     <div className="col-span-2">
-                      <input
-                        type="number"
-                        required
-                        min="0.01"
-                        step="0.01"
-                        className="input text-sm"
-                        placeholder="Qty"
-                        value={item.quantity}
-                        onChange={(e) => updateItem(i, 'quantity', e.target.value)}
-                      />
+                      <input type="number" required min="0.01" step="0.01" className="input text-sm" placeholder="Qty" value={item.quantity} onChange={(e) => updateItem(i, 'quantity', e.target.value)} />
                     </div>
                     <div className="col-span-3">
-                      <input
-                        type="number"
-                        required
-                        min="0"
-                        step="0.01"
-                        className="input text-sm"
-                        placeholder="Unit price"
-                        value={item.unit_price}
-                        onChange={(e) => updateItem(i, 'unit_price', e.target.value)}
-                      />
+                      <input type="number" required min="0" step="0.01" className="input text-sm" placeholder="Unit price" value={item.unit_price} onChange={(e) => updateItem(i, 'unit_price', e.target.value)} />
                     </div>
                     <div className="col-span-1 flex items-center justify-center pt-2">
                       {form.items.length > 1 && (
-                        <button type="button" onClick={() => removeItem(i)} className="text-gray-600 hover:text-red-400">
+                        <button type="button" onClick={() => removeItem(i)} className="text-slate-600 hover:text-red-400">
                           <Trash2 className="w-4 h-4" />
                         </button>
                       )}
@@ -342,9 +317,9 @@ export default function Invoices() {
               </div>
             </div>
 
-            <div className="flex justify-end border-t border-gray-800 pt-3">
+            <div className="flex justify-end pt-3" style={{ borderTop: '1px solid var(--border)' }}>
               <div className="text-right">
-                <span className="text-sm text-gray-500">Total: </span>
+                <span className="text-sm text-slate-500">Total: </span>
                 <span className="text-lg font-bold text-white">${total.toFixed(2)}</span>
               </div>
             </div>
@@ -353,10 +328,10 @@ export default function Invoices() {
               <button type="button" onClick={() => setModalOpen(false)} className="btn-secondary flex-1">Cancel</button>
               <button type="submit" disabled={saving} className="btn-primary flex-1">
                 {saving ? (
-                  <span className="flex items-center justify-center gap-2">
+                  <>
                     <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                     Creating...
-                  </span>
+                  </>
                 ) : 'Create invoice'}
               </button>
             </div>

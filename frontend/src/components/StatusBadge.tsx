@@ -4,7 +4,7 @@ const variants: Record<string, string> = {
   paid: 'bg-green-900/50 text-green-300',
   overdue: 'bg-red-900/50 text-red-300',
   not_started: 'bg-gray-700 text-gray-300',
-  in_progress: 'bg-yellow-900/50 text-yellow-300',
+  in_progress: 'bg-amber-900/50 text-amber-300',
   completed: 'bg-green-900/50 text-green-300',
 };
 

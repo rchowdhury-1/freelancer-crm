@@ -6,15 +6,15 @@ export default function Layout({ children }: { children: ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-gray-950">
+    <div className="flex min-h-screen" style={{ background: 'var(--bg)' }}>
       <Sidebar mobileOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
 
       <div className="flex-1 flex flex-col min-w-0">
         {/* Mobile header */}
-        <div className="lg:hidden flex items-center gap-3 px-4 py-3 bg-gray-900 border-b border-gray-800">
+        <div className="lg:hidden flex items-center gap-3 px-4 py-3 bg-gray-900" style={{ borderBottom: '1px solid var(--border)' }}>
           <button
             onClick={() => setMobileOpen(true)}
-            className="p-1.5 text-gray-400 hover:text-white rounded-lg hover:bg-gray-800"
+            className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-gray-800"
           >
             <Menu className="w-5 h-5" />
           </button>
