@@ -98,16 +98,16 @@ export default function Clients() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-white">Clients</h1>
-          <p className="text-gray-500 text-sm mt-1">{clients.length} total client{clients.length !== 1 ? 's' : ''}</p>
+          <p className="text-slate-500 text-sm mt-1">{clients.length} total client{clients.length !== 1 ? 's' : ''}</p>
         </div>
-        <button onClick={openCreate} className="btn-primary inline-flex items-center gap-2">
+        <button onClick={openCreate} className="btn-primary">
           <Plus className="w-4 h-4" /> Add client
         </button>
       </div>
 
       {/* Search */}
       <div className="relative">
-        <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+        <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
         <input
           type="text"
           placeholder="Search clients..."
@@ -120,14 +120,14 @@ export default function Clients() {
       {/* Table */}
       {loading ? (
         <div className="flex justify-center py-16">
-          <div className="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+          <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
         </div>
       ) : filtered.length === 0 ? (
         <div className="card text-center py-16">
           <Building2 className="w-10 h-10 text-gray-700 mx-auto mb-3" />
-          <p className="text-gray-500 mb-1">{search ? 'No clients match your search.' : 'No clients yet.'}</p>
+          <p className="text-slate-500 mb-1">{search ? 'No clients match your search.' : 'No clients yet.'}</p>
           {!search && (
-            <button onClick={openCreate} className="text-indigo-400 hover:text-indigo-300 text-sm mt-2">
+            <button onClick={openCreate} className="text-amber-400 hover:text-amber-300 text-sm mt-2">
               Add your first client →
             </button>
           )}
@@ -136,7 +136,7 @@ export default function Clients() {
         <div className="card p-0 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="border-b border-gray-800">
+              <thead style={{ borderBottom: '1px solid var(--border)' }}>
                 <tr>
                   <th className="table-header">Name</th>
                   <th className="table-header hidden sm:table-cell">Company</th>
@@ -149,29 +149,29 @@ export default function Clients() {
                   <tr key={client.id} className="hover:bg-gray-800/30 transition-colors">
                     <td className="table-cell">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-indigo-700/50 rounded-full flex items-center justify-center text-indigo-300 text-sm font-medium flex-shrink-0">
+                        <div className="w-8 h-8 bg-blue-700/50 rounded-full flex items-center justify-center text-blue-300 text-sm font-medium flex-shrink-0">
                           {client.name.charAt(0).toUpperCase()}
                         </div>
                         <div>
                           <p className="font-medium text-white">{client.name}</p>
                           {client.company && (
-                            <p className="text-xs text-gray-500 sm:hidden">{client.company}</p>
+                            <p className="text-xs text-slate-500 sm:hidden">{client.company}</p>
                           )}
                         </div>
                       </div>
                     </td>
-                    <td className="table-cell hidden sm:table-cell text-gray-400">
+                    <td className="table-cell hidden sm:table-cell text-slate-400">
                       {client.company || '—'}
                     </td>
                     <td className="table-cell hidden md:table-cell">
                       <div className="space-y-1">
                         {client.email && (
-                          <div className="flex items-center gap-1.5 text-xs text-gray-400">
+                          <div className="flex items-center gap-1.5 text-xs text-slate-400">
                             <Mail className="w-3 h-3" /> {client.email}
                           </div>
                         )}
                         {client.phone && (
-                          <div className="flex items-center gap-1.5 text-xs text-gray-400">
+                          <div className="flex items-center gap-1.5 text-xs text-slate-400">
                             <Phone className="w-3 h-3" /> {client.phone}
                           </div>
                         )}
@@ -180,7 +180,7 @@ export default function Clients() {
                     <td className="table-cell text-right">
                       {confirmDeleteId === client.id ? (
                         <div className="flex items-center justify-end gap-2">
-                          <span className="text-xs text-gray-400">Delete?</span>
+                          <span className="text-xs text-slate-400">Delete?</span>
                           <button
                             onClick={() => handleDelete(client.id)}
                             disabled={deleting}
@@ -190,7 +190,7 @@ export default function Clients() {
                           </button>
                           <button
                             onClick={() => setConfirmDeleteId(null)}
-                            className="text-xs bg-gray-700 hover:bg-gray-600 text-gray-300 px-2 py-1 rounded transition-colors"
+                            className="text-xs bg-gray-700 hover:bg-gray-600 text-slate-300 px-2 py-1 rounded transition-colors"
                           >
                             Cancel
                           </button>
@@ -199,13 +199,13 @@ export default function Clients() {
                         <div className="flex items-center justify-end gap-1">
                           <button
                             onClick={() => openEdit(client)}
-                            className="p-1.5 text-gray-500 hover:text-indigo-400 hover:bg-gray-800 rounded transition-colors"
+                            className="p-1.5 text-slate-500 hover:text-blue-400 hover:bg-gray-800 rounded transition-colors"
                           >
                             <Pencil className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => setConfirmDeleteId(client.id)}
-                            className="p-1.5 text-gray-500 hover:text-red-400 hover:bg-gray-800 rounded transition-colors"
+                            className="p-1.5 text-slate-500 hover:text-red-400 hover:bg-gray-800 rounded transition-colors"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -285,10 +285,10 @@ export default function Clients() {
               </button>
               <button type="submit" disabled={saving} className="btn-primary flex-1">
                 {saving ? (
-                  <span className="flex items-center justify-center gap-2">
+                  <>
                     <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                     Saving...
-                  </span>
+                  </>
                 ) : editing ? 'Save changes' : 'Add client'}
               </button>
             </div>
