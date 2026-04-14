@@ -17,6 +17,7 @@ async function initDb() {
 
     ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verified BOOLEAN NOT NULL DEFAULT false;
     ALTER TABLE users ADD COLUMN IF NOT EXISTS verification_token TEXT;
+    UPDATE users SET email_verified = true WHERE verification_token IS NULL AND email_verified = false;
 
     CREATE TABLE IF NOT EXISTS refresh_tokens (
       id TEXT PRIMARY KEY,
